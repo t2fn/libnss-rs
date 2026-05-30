@@ -77,7 +77,7 @@ becomes the symbol prefix: `nss_mylib_setpwent`.
 # 2. getpwent_r()  — get first entry
 # 3. getpwent_r()  — get second entry
 # ...
-# n. getpwent_r()  — last entry returns TryAgain
+# n. getpwent_r()  — last entry returns `NotFound`
 # n+1. endpwent()  — close iterator
 ```
 

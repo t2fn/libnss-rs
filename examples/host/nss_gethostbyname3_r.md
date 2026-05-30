@@ -45,7 +45,7 @@ extern "C" {
 | `buflen` | in | `size_t` | Buffer size. |
 | `errnop` | out | `*mut c_int` | Standard errno. |
 | `h_errnop` | out | `*mut c_int` | Host error code. |
-| `ttlp` | out | `*mut i32` | TTL value (0 if pointer is null). |
+| `ttlp` | out | `*mut i32` | TTL value (written as 0 when pointer is non-null). |
 | `canonp` | out | `*mut *const c_char` | Canonical name pointer. |
 
 ## Additional Fields
@@ -54,6 +54,8 @@ extern "C" {
 |---|---|
 | `ttlp` | Time-to-live for the resolved address. If null, not set. |
 | `canonp` | Pointer to the canonical (official) hostname. If null, `name` is used. |
+
+**Note:** TTL is always written as 0 when the pointer is non-null.
 
 ## How It Works
 

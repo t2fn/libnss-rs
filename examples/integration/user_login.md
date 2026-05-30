@@ -220,8 +220,12 @@ SSH login flow (initgroups at the core):
    │
 4. pam_open_session()
    ├── nss_getpwnam_r("alice")     → confirm dir="/home/alice"
-   ├── nss_getpwnam_r("alice")     → confirm shell="/bin/zsh"
+   ├── nss_getpwnam_r("alice")     → confirm shell="/bin/zsh"  (cached)
    └── setenv("HOME", "/home/alice")
+   
+   **Note:** While two `getpwnam_r` calls are shown, most real implementations
+   cache the result of the first lookup, so the second call returns the cached entry
+   without re-querying the database.
    │
 5. exec("/bin/zsh")
    │

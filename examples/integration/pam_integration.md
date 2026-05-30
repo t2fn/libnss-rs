@@ -21,7 +21,7 @@ session setup phases.
 │  │ 3. pam_setcred      │ — manage credentials         │
 │  │ 4. pam_open_session │ — prepare session            │
 │  │ 5. pam_close_session│ — cleanup session            │
-│  │ 6. pam_close_session│ — cleanup session            │
+│  │ 6. pam_end          │ — finalize session           │
 │  └──────┬──────────────┘                              │
 │         │                                             │
 │         ▼                                             │

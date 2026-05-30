@@ -32,6 +32,10 @@ extern "C" {
 }
 ```
 
+Note: While the C ABI declares `struct hostent *`, the actual Rust implementation returns
+`c_int` (status code). The NSS convention uses the return value as a status code while
+the `result` pointer serves as the output hostent.
+
 ## Parameters
 
 | Parameter | Direction | Type | Description |

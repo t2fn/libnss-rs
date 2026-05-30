@@ -52,7 +52,7 @@ extern "C" {
    `getpwent_r()` calls, the application signals it is done iterating.
 2. **The `Iterator<Passwd>::close()` method is called** — This sets `items = None`
    (releasing the `VecDeque`) and resets `index = 0`.
-3. **The next call to `getpwent_r()` will return `TryAgain`** — Because `items` is `None`,
+3. **The next call to `getpwent_r()` will return `Unavail`** — Because `items` is `None`,
    the iterator reports that no entries are available.
 4. **`setpwent()` can be called again to restart** — The iterator is reset to a clean state.
 
@@ -66,7 +66,7 @@ extern "C" {
 # 2. getpwent_r()     — entry 1
 # 3. getpwent_r()     — entry 2
 # ...
-# n. getpwent_r()     — entry N (TryAgain)
+# n. getpwent_r()     — entry N (NotFound)
 # n+1. endpwent()     — iterator = Closed, memory freed
 ```
 
@@ -115,6 +115,6 @@ extern "C" fn nss_example_endpwent() -> c_int {
    │                                        │
    │                                        │
    ▼                                        ▼
- getpwent_r()                             idle
- returns TryAgain                     (ready for setpwent)
+ getpwent_r()                             Closed
+ returns NotFound                     (ready for setpwent)
 ```

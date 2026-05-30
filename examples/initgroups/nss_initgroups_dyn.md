@@ -47,7 +47,7 @@ extern "C" {
 | Value | Constant | Description |
 |---|---|---|
 | `1` | `NssStatus::Success` | Groups written successfully. |
-| `0` | `NssStatus::Success` | No more groups (empty result). |
+| `1` | `NssStatus::Success` | No more groups (empty result). |
 | `-2` | `NssStatus::TryAgain` | Buffer too small. |
 | `-1` | `NssStatus::Unavail` | Temporary failure. |
 

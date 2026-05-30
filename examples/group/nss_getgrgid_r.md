@@ -22,7 +22,7 @@ fn get_entry_by_gid(gid: c_uint) -> Response<Group>;
 ```c
 extern "C" {
     int nss_<name>_getgrgid_r(
-        gid_t gid,                /* input:  group ID */
+        gid_t uid,                /* input:  group ID */
         struct group *result,     /* output: group entry */
         char *buf,                /* input:  buffer */
         size_t buflen,            /* input:  buffer length */
