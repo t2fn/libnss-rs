@@ -53,32 +53,32 @@ extern "C" {
 
 ```
 ┌───────────────────────────────────────────────────────────────┐
-│  getpwuid_r(uid=1005) call sequence                            │
-│                                                                │
-│  1. Application:                                                │
+│  getpwuid_r(uid=1005) call sequence                           │
+│                                                               │
+│  1. Application:                                              │
 │     uid_t target = 1005;                                      │
 │     struct passwd pw;                                         │
 │     char buf[2048];                                           │
 │     int err;                                                  │
-│     nss_example_getpwuid_r(target, &pw, buf, 2048, &err);    │
-│                                                                │
+│     nss_example_getpwuid_r(target, &pw, buf, 2048, &err);     │
+│                                                               │
 │  2. libnss-rs internal flow:                                  │
-│     PasswdHooks::get_entry_by_uid(uid)                       │
+│     PasswdHooks::get_entry_by_uid(uid)                        │
 │        │                                                      │
 │        ├── Iterate all entries from your data source          │
-│        ├── Compare entry.uid == uid                          │
+│        ├── Compare entry.uid == uid                           │
 │        │                                                      │
-│        ├── If found: Response::Success(entry)                │
-│        │   │                                                 │
-│        │   └── Response::to_c() → fill result via CBuffer   │
+│        ├── If found: Response::Success(entry)                 │
+│        │   │                                                  │
+│        │   └── Response::to_c() → fill result via CBuffer     │
 │        │                                                      │
-│        └── If not found: Response::NotFound                  │
-│                                                                │
-│  3. Result when uid=1005 matches:                            │
-│     pw.name   → "test"         pw.uid   → 1005              │
-│     pw.passwd → "$6$xyz"       pw.gid   → 1005              │
-│     pw.gecos  → "Test User"    pw.dir   → "/home/test"      │
-│     pw.shell  → "/bin/bash"                         │
+│        └── If not found: Response::NotFound                   │
+│                                                               │
+│  3. Result when uid=1005 matches:                             │
+│     pw.name   → "test"         pw.uid   → 1005                │
+│     pw.passwd → "$6$xyz"       pw.gid   → 1005                │
+│     pw.gecos  → "Test User"    pw.dir   → "/home/test"        │
+│     pw.shell  → "/bin/bash"                                   │
 └───────────────────────────────────────────────────────────────┘
 ```
 

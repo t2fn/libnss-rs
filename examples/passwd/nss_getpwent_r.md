@@ -61,31 +61,31 @@ pub struct CPasswd {
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  getpwent_r() call sequence                                  │
-│                                                              │
-│  1. Application:                                              │
-│     struct passwd pw;                                        │
-│     char buf[2048];                                          │
-│     int err;                                                 │
+│  getpwent_r() call sequence                                 │
+│                                                             │
+│  1. Application:                                            │
+│     struct passwd pw;                                       │
+│     char buf[2048];                                         │
+│     int err;                                                │
 │     nss_example_getpwent_r(&pw, buf, 2048, &err);           │
-│                                                              │
-│  2. libnss-rs internal flow:                                 │
+│                                                             │
+│  2. libnss-rs internal flow:                                │
 │     ┌────────────────────────────────────────────────────┐  │
-│     │ PASSWD_EXAMPLE_ITERATOR.lock()                    │  │
+│     │ PASSWD_EXAMPLE_ITERATOR.lock()                     │  │
 │     │ iter.next():                                       │  │
-│     │   2a. items.get(index)  →  Some(Passwd)           │  │
-│     │   2b. index += 1                                     │  │
-│     │   2c. Passwd.to_c(result, buf, buflen, errnop)   │  │
-│     │       → name, passwd, gecos, dir, shell copied    │  │
+│     │   2a. items.get(index)  →  Some(Passwd)            │  │
+│     │   2b. index += 1                                   │  │
+│     │   2c. Passwd.to_c(result, buf, buflen, errnop)     │  │
+│     │       → name, passwd, gecos, dir, shell copied     │  │
 │     │         into buf via CBuffer.write_str()           │  │
-│     │       → pointers in result set to buf addresses     │  │
+│     │       → pointers in result set to buf addresses    │  │
 │     └────────────────────────────────────────────────────┘  │
-│                                                              │
-│  3. Result in result struct:                                 │
+│                                                             │
+│  3. Result in result struct:                                │
 │     pw.name   → "root"       (in buf)                       │
 │     pw.passwd → "$6$xyz"     (in buf)                       │
-│     pw.uid    → 0                                            │
-│     pw.gid    → 0                                            │
+│     pw.uid    → 0                                           │
+│     pw.gid    → 0                                           │
 │     pw.gecos  → "Root"       (in buf)                       │
 │     pw.dir    → "/root"      (in buf)                       │
 │     pw.shell  → "/bin/bash"  (in buf)                       │
@@ -147,15 +147,15 @@ pam_authenticate(user, password)
 ## Buffer Management
 
 ```
-┌────────────────────────────────────────────────────┐
-│ Caller's buf (buflen bytes)                        │
-│                                                    │
-│  name    │ passwd  │ gecos  │ dir     │ shell     │
-│ "root\0" │ "$6$.. │ "Root\0"│ "/root │ "/bin..  │
-│ ↑        │ ↑       │ ↑       │ ↑       │ ↑        │
-│ result→name│result│result│result.dir│result→shell│
-│ (in buf) │ (in buf)│(in buf)│ (in buf)│(in buf)  │
-└────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────┐
+│ Caller's buf (buflen bytes)                            │
+│                                                        │
+│  name      │ passwd  │ gecos   │ dir      │ shell      │
+│ "root\0"   │ "$6$..  │ "Root\0"│ "/root   │ "/bin..    │
+│ ↑          │ ↑       │ ↑       │ ↑        │ ↑          │
+│ result→name│result   │result   │result.dir│result→shell│
+│ (in buf)   │ (in buf)│(in buf) │ (in buf) │(in buf)    │
+└────────────────────────────────────────────────────────┘
           ↑
      CBuffer::pos points here (next free byte)
 ```

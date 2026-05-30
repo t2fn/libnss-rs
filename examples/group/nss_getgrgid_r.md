@@ -57,21 +57,21 @@ extern "C" {
 │  getgrgid_r(1005) call sequence                    │
 │                                                    │
 │  1. Application:                                   │
-│     struct group gr;                              │
-│     char buf[2048];                               │
-│     int err;                                      │
-│     nss_example_getgrgid_r(1005, &gr, buf, 2048, │
+│     struct group gr;                               │
+│     char buf[2048];                                │
+│     int err;                                       │
+│     nss_example_getgrgid_r(1005, &gr, buf, 2048,   │
 │                            &err);                  │
 │                                                    │
-│  2. libnss-rs flow:                               │
-│     GroupHooks::get_entry_by_gid(1005)            │
+│  2. libnss-rs flow:                                │
+│     GroupHooks::get_entry_by_gid(1005)             │
 │         ├── Iterate all entries                    │
-│         ├── Compare entry.gid == gid              │
-│         └── Response::to_c(result, buf, buflen)   │
+│         ├── Compare entry.gid == gid               │
+│         └── Response::to_c(result, buf, buflen)    │
 │                                                    │
 │  3. Result:                                        │
 │     gr.name     → "test"       gr.gid      → 1005  │
-│     gr.members  → ["someone"]                    │
+│     gr.members  → ["someone"]                      │
 └────────────────────────────────────────────────────┘
 ```
 

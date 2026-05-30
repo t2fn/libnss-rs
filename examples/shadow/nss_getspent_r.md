@@ -67,31 +67,31 @@ pub struct CShadow {
 ## How It Works
 
 ```
-┌────────────────────────────────────────────────────┐
-│  getspent_r() call sequence                        │
-│                                                    │
-│  1. Application:                                   │
-│     struct spwd sp;                               │
-│     char buf[2048];                               │
-│     int err;                                      │
-│     nss_example_getspent_r(&sp, buf, 2048, &err);│
-│                                                    │
-│  2. libnss-rs flow:                               │
-│     Iterator::next()  →  Response<Shadow>         │
-│         ├── items.get(index)  →  Some(Shadow)     │
-│         ├── index += 1                             │
-│         └── Shadow::to_c(result, buf, buflen)    │
-│              → name, passwd → buf (CStrings)      │
-│              → last_change → c_long               │
-│              → change_min/max → c_long            │
-│              → change_warn/expire → c_long        │
-│                                                    │
-│  3. Result:                                        │
-│     sp.name     → "test"        sp.last_change  → 18660    │
+┌──────────────────────────────────────────────────────────┐
+│  getspent_r() call sequence                              │
+│                                                          │
+│  1. Application:                                         │
+│     struct spwd sp;                                      │
+│     char buf[2048];                                      │
+│     int err;                                             │
+│     nss_example_getspent_r(&sp, buf, 2048, &err);        │
+│                                                          │
+│  2. libnss-rs flow:                                      │
+│     Iterator::next()  →  Response<Shadow>                │
+│         ├── items.get(index)  →  Some(Shadow)            │
+│         ├── index += 1                                   │
+│         └── Shadow::to_c(result, buf, buflen)            │
+│              → name, passwd → buf (CStrings)             │
+│              → last_change → c_long                      │
+│              → change_min/max → c_long                   │
+│              → change_warn/expire → c_long               │
+│                                                          │
+│  3. Result:                                              │
+│     sp.name     → "test"      sp.last_change  → 18660    │
 │     sp.passwd   → "$6$hash"   sp.min_days     → 0        │
-│     sp.max_days → 99999         sp.warn_days   → 7         │
+│     sp.max_days → 99999       sp.warn_days   → 7         │
 │     sp.inact_days → -1        sp.expire_date → -1        │
-└────────────────────────────────────────────────────┘
+└──────────────────────────────────────────────────────────┘
 ```
 
 ## Integration Examples

@@ -40,18 +40,18 @@ becomes the symbol prefix: `nss_mylib_setpwent`.
 ```
 ┌──────────────────────────────────────────────────────────┐
 │  Application (e.g., getent, login, su)                   │
-│      │                                                     │
+│      │                                                   │
 │      ▼  Calls nss_<name>_setpwent()                      │
-│  glibc NSS dispatcher                                     │
-│      │                                                     │
+│  glibc NSS dispatcher                                    │
+│      │                                                   │
 │      ▼  PasswdHooks::get_all_entries()                   │
-│  Your Rust implementation                                  │
-│      │                                                     │
+│  Your Rust implementation                                │
+│      │                                                   │
 │      ▼  iter.open(Vec<Passwd>)                           │
 │  lazy_static Mutex<Iterator<Passwd>>                     │
-│      │                                                     │
+│      │                                                   │
 │      ▼  Iterator state: items = Some(VecDeque), index = 0│
-│  Iterator ready for sequential getpwent_r() calls          │
+│  Iterator ready for sequential getpwent_r() calls        │
 └──────────────────────────────────────────────────────────┘
 ```
 

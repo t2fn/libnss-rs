@@ -9,22 +9,22 @@ It uses multiple NSS calls to build a complete picture.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                      id test                                 │
+│                      id test                                │
 │                                                             │
-│  1. Look up user by name                                     │
+│  1. Look up user by name                                    │
 │     ├── nss_getpwnam_r("test")                              │
-│     │   → uid = 1005, gid = 1005                           │
-│     │   → name = "test"                                    │
-│     │   → dir = "/home/test"                               │
-│     │   └── shell = "/bin/bash"                            │
-│     │                                                     │
+│     │   → uid = 1005, gid = 1005                            │
+│     │   → name = "test"                                     │
+│     │   → dir = "/home/test"                                │
+│     │   └── shell = "/bin/bash"                             │
+│     │                                                       │
 │  2. Get supplementary groups                                │
 │     ├── nss_initgroups_dyn("test", 1005)                    │
-│     │   → groups = [1005, 3005, 3006, 3007]               │
-│     │   └── ngroups = 4                                    │
-│     │                                                     │
-│  3. Format output                                            │
-│     └── "uid=1005(test) gid=1005(test)                     │
+│     │   → groups = [1005, 3005, 3006, 3007]                 │
+│     │   └── ngroups = 4                                     │
+│     │                                                       │
+│  3. Format output                                           │
+│     └── "uid=1005(test) gid=1005(test)                      │
 │           groups=1005(test),3005(initgroup1),               │
 │                      3006(initgroup2),3007(initgroup3)"     │
 │                                                             │

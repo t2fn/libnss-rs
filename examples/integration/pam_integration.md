@@ -10,9 +10,9 @@ session setup phases.
 
 ```
 ┌───────────────────────────────────────────────────────┐
-│  Application (login, sshd, sudo, etc.)               │
-│         │                                              │
-│         ▼                                              │
+│  Application (login, sshd, sudo, etc.)                │
+│         │                                             │
+│         ▼                                             │
 │  ┌─────────────────────┐                              │
 │  │ PAM Stack (libpam)  │                              │
 │  │                     │                              │
@@ -23,8 +23,8 @@ session setup phases.
 │  │ 5. pam_close_session│ — cleanup session            │
 │  │ 6. pam_close_session│ — cleanup session            │
 │  └──────┬──────────────┘                              │
-│         │                                              │
-│         ▼                                              │
+│         │                                             │
+│         ▼                                             │
 │  ┌─────────────────────┐                              │
 │  │  NSS (libnss.so.2)  │                              │
 │  │                     │                              │
@@ -34,15 +34,15 @@ session setup phases.
 │  │  initgroups database│ — supplementary groups       │
 │  │  host database      │ — hostname resolution        │
 │  └──────┬──────────────┘                              │
-│         │                                              │
-│         ▼                                              │
+│         │                                             │
+│         ▼                                             │
 │  ┌─────────────────────┐                              │
 │  │ Your NSS Module     │                              │
 │  │                     │                              │
 │  │  libnss_hardcoded.so│                              │
 │  └─────────────────────┘                              │
-│         │                                              │
-│         ▼                                              │
+│         │                                             │
+│         ▼                                             │
 │  /etc/passwd           │ — local file backend         │
 │  /etc/group            │                              │
 │  /etc/shadow           │                              │
@@ -216,17 +216,17 @@ SSH Client                    sshd                         PAM / NSS
 
 authenticate()
   │                         │
-  ├── nss_getpwnam_r()     │
-  │   → uid, gid, dir      │
+  ├── nss_getpwnam_r()      │
+  │   → uid, gid, dir       │
   │                         │
-  ├── nss_getspnam_r()     │
+  ├── nss_getspnam_r()      │
   │   → password hash       │
   │                         │
   │                         │  ★ KEY CALL:
   │                         │
-  ├── nss_initgroups_dyn() │
-  │   │                    │
-  │   ├── InitgroupsHooks::│
+  ├── nss_initgroups_dyn()  │
+  │   │                     │
+  │   ├── InitgroupsHooks:: │
   │   │   get_entries_by_user()
   │   │   → [wheel, adm, sudo, docker]
   │   │
@@ -236,7 +236,7 @@ authenticate()
   │   └── setgroups(ngroups, groups)
   │       → process groups set
   │
-  ├── pam_open_session()   │
+  ├── pam_open_session()    │
   │   → env, dir, shell     │
   │                         │
   └── exec(shell)           │

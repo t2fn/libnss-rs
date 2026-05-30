@@ -61,20 +61,20 @@ pub struct CGroup {
 │  getgrent_r() call sequence                        │
 │                                                    │
 │  1. Application:                                   │
-│     struct group gr;                             │
-│     char buf[2048];                              │
-│     int err;                                      │
-│     nss_example_getgrent_r(&gr, buf, 2048, &err);│
+│     struct group gr;                               │
+│     char buf[2048];                                │
+│     int err;                                       │
+│     nss_example_getgrent_r(&gr, buf, 2048, &err);  │
 │                                                    │
-│  2. libnss-rs flow:                               │
-│     Iterator::next()  →  Response<Group>          │
-│         ├── items.get(index)  →  Some(Group)      │
+│  2. libnss-rs flow:                                │
+│     Iterator::next()  →  Response<Group>           │
+│         ├── items.get(index)  →  Some(Group)       │
 │         ├── index += 1                             │
-│         └── Group::to_c(result, buf, buflen)      │
+│         └── Group::to_c(result, buf, buflen)       │
 │                                                    │
 │  3. Result:                                        │
-│     gr.name     → "test"       gr.gid      → 1005  │
-│     gr.passwd   → ""           gr.members → ["someone"]
+│     gr.name     → "test"   gr.gid     → 1005       │
+│     gr.passwd   → ""       gr.members → ["someone"]|
 └────────────────────────────────────────────────────┘
 ```
 

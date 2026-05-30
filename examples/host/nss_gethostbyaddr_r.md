@@ -60,31 +60,31 @@ extern "C" {
 ```
 ┌────────────────────────────────────────────────────┐
 │  gethostbyaddr_r("177.42.42.42", 4, AF_INET)       │
-│                                                      │
-│  1. Application:                                     │
-│     char addr[4] = {177, 42, 42, 42};             │
-│     struct hostent he;                              │
-│     char buf[4096];                                 │
-│     int err, h_err;                                 │
-│     nss_example_gethostbyaddr_r(                     │
+│                                                    │
+│  1. Application:                                   │
+│     char addr[4] = {177, 42, 42, 42};              │
+│     struct hostent he;                             │
+│     char buf[4096];                                │
+│     int err, h_err;                                │
+│     nss_example_gethostbyaddr_r(                   │
 │         addr, 4, AF_INET, &he, buf, 4096,          │
-│         &err, &h_err);                               │
-│                                                      │
-│  2. libnss-rs flow:                                  │
+│         &err, &h_err);                             │
+│                                                    │
+│  2. libnss-rs flow:                                │
 │     ┌──────────────────────────────────────────┐   │
-│     │ Step 1: memcpy(addr, buf, 4)            │   │
-│     │ Step 2: IpAddr::V4(Ipv4Addr::from(buf))│   │
-│     │ Step 3: HostHooks::get_host_by_addr()  │   │
+│     │ Step 1: memcpy(addr, buf, 4)             │   │
+│     │ Step 2: IpAddr::V4(Ipv4Addr::from(buf))  │   │
+│     │ Step 3: HostHooks::get_host_by_addr()    │   │
 │     │         → Compare addr == stored addr    │   │
-│     │ Step 4: Response::to_c(result, buf)    │   │
+│     │ Step 4: Response::to_c(result, buf)      │   │
 │     └──────────────────────────────────────────┘   │
-│                                                      │
-│  3. Result:                                          │
-│     he.h_name       → "test.example"              │
-│     he.h_addrtype   → AF_INET (2)                 │
+│                                                    │
+│  3. Result:                                        │
+│     he.h_name       → "test.example"               │
+│     he.h_addrtype   → AF_INET (2)                  │
 │     he.h_length     → 4                            │
-│     he.h_addr_list  → [177.42.42.42]              │
-│     *h_errnop       → NetDbSuccess (0)            │
+│     he.h_addr_list  → [177.42.42.42]               │
+│     *h_errnop       → NetDbSuccess (0)             │
 └────────────────────────────────────────────────────┘
 ```
 

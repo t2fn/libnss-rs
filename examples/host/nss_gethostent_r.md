@@ -61,16 +61,16 @@ pub struct CHost {
 │  gethostent_r() call sequence                      │
 │                                                    │
 │  1. Application:                                   │
-│     struct hostent he;                            │
-│     char buf[4096];                               │
+│     struct hostent he;                             │
+│     char buf[4096];                                │
 │     int err;                                       │
-│     nss_example_gethostent_r(&he, buf,           │
+│     nss_example_gethostent_r(&he, buf,             │
 │                              sizeof(buf), &err);   │
 │                                                    │
-│  2. libnss-rs flow:                               │
-│     Iterator::next()  →  Response<Host>           │
+│  2. libnss-rs flow:                                │
+│     Iterator::next()  →  Response<Host>            │
 │         ├── items.get(index)  →  Some(Host)        │
-│         ├── index += 1                              │
+│         ├── index += 1                             │
 │         └── Host::to_c(result, buf, buflen)        │
 │              → name → buf (CString)                │
 │              → aliases → buf (string array)        │
@@ -79,11 +79,11 @@ pub struct CHost {
 │              → h_length = 4 or 16                  │
 │                                                    │
 │  3. Result:                                        │
-│     he.h_name       → "test.example"              │
-│     he.h_aliases    → ["other.example", NULL]     │
-│     he.h_addrtype   → AF_INET (=2)               │
-│     he.h_length     → 4                           │
-│     he.h_addr_list  → [177.42.42.42, NULL]       │
+│     he.h_name       → "test.example"               │
+│     he.h_aliases    → ["other.example", NULL]      │
+│     he.h_addrtype   → AF_INET (=2)                 │
+│     he.h_length     → 4                            │
+│     he.h_addr_list  → [177.42.42.42, NULL]         │
 └────────────────────────────────────────────────────┘
 ```
 

@@ -35,20 +35,20 @@ extern "C" {
 
 ```
 ┌────────────────────────────────────────────────────┐
-│  sethostent() — Reset host iterator                  │
-│                                                      │
-│  Application (getent hosts)                          │
-│      │                                               │
+│  sethostent() — Reset host iterator                │
+│                                                    │
+│  Application (getent hosts)                        │
+│      │                                             │
 │      ▼  Calls nss_<name>_sethostent()              │
-│  glibc NSS dispatcher                                │
-│      │                                               │
+│  glibc NSS dispatcher                              │
+│      │                                             │
 │      ▼  HostHooks::get_all_entries()               │
-│  Your Rust implementation                            │
-│      │                                               │
-│      ▼  iter.open(Vec<Host>)                        │
-│  lazy_static Mutex<Iterator<Host>>                  │
-│      │                                               │
-│      ▼  Iterator ready for gethostent_r()           │
+│  Your Rust implementation                          │
+│      │                                             │
+│      ▼  iter.open(Vec<Host>)                       │
+│  lazy_static Mutex<Iterator<Host>>                 │
+│      │                                             │
+│      ▼  Iterator ready for gethostent_r()          │
 └────────────────────────────────────────────────────┘
 ```
 

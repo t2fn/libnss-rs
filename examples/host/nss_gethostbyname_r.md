@@ -45,34 +45,34 @@ extern "C" {
 
 ```
 ┌────────────────────────────────────────────────────┐
-│  gethostbyname_r("test.example")                    │
-│                                                      │
-│  1. Application:                                     │
-│     struct hostent he;                               │
-│     char buf[4096];                                  │
-│     int err, h_err;                                   │
-│     nss_example_gethostbyname_r(                      │
-│         "test.example", &he, buf, 4096,              │
-│         &err, &h_err);                               │
-│                                                      │
-│  2. libnss-rs flow:                                  │
-│     gethostbyname_r("test.example")                  │
-│         │                                            │
-│         └── delegates to gethostbyname2_r(           │
-│               "test.example",                         │
-│               AF_UNSPEC  ← try both V4 and V6)      │
-│         │                                            │
-│         ├── try AF_INET (IPv4) first                 │
-│         ├── if not found, try AF_INET6 (IPv6)        │
-│         └── return first match                        │
-│                                                      │
-│  3. Result:                                          │
-│     he.h_name       → "test.example"                 │
-│     he.h_aliases    → ["other.example", NULL]        │
-│     he.h_addrtype   → AF_INET (2)                   │
-│     he.h_length     → 4                              │
-│     he.h_addr_list  → [177.42.42.42, NULL]          │
-│     *h_errnop       → NetDbSuccess (0)              │
+│  gethostbyname_r("test.example")                   │
+│                                                    │
+│  1. Application:                                   │
+│     struct hostent he;                             │
+│     char buf[4096];                                │
+│     int err, h_err;                                │
+│     nss_example_gethostbyname_r(                   │
+│         "test.example", &he, buf, 4096,            │
+│         &err, &h_err);                             │
+│                                                    │
+│  2. libnss-rs flow:                                │
+│     gethostbyname_r("test.example")                │
+│         │                                          │
+│         └── delegates to gethostbyname2_r(         │
+│               "test.example",                      │
+│               AF_UNSPEC  ← try both V4 and V6)     │
+│         │                                          │
+│         ├── try AF_INET (IPv4) first               │
+│         ├── if not found, try AF_INET6 (IPv6)      │
+│         └── return first match                     │
+│                                                    │
+│  3. Result:                                        │
+│     he.h_name       → "test.example"               │
+│     he.h_aliases    → ["other.example", NULL]      │
+│     he.h_addrtype   → AF_INET (2)                  │
+│     he.h_length     → 4                            │
+│     he.h_addr_list  → [177.42.42.42, NULL]         │
+│     *h_errnop       → NetDbSuccess (0)             │
 └────────────────────────────────────────────────────┘
 ```
 

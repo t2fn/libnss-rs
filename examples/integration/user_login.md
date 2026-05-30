@@ -13,34 +13,34 @@ flow through all five NSS databases.
 │                      login(3) call                          │
 │                                                             │
 │  1. Get user entry                                          │
-│     ├── nss_getpwnam_r("alice")                            │
-│     │     ├── Passwd::name → "alice"                       │
-│     │     ├── Passwd::uid → 2000                           │
-│     │     ├── Passwd::gid → 2000                           │
-│     │     ├── Passwd::dir → "/home/alice"                  │
-│     │     └── Passwd::shell → "/bin/zsh"                   │
-│     │                                                     │
-│     ├── nss_getspnam_r("alice")                            │
+│     ├── nss_getpwnam_r("alice")                             │
+│     │     ├── Passwd::name → "alice"                        │
+│     │     ├── Passwd::uid → 2000                            │
+│     │     ├── Passwd::gid → 2000                            │
+│     │     ├── Passwd::dir → "/home/alice"                   │
+│     │     └── Passwd::shell → "/bin/zsh"                    │
+│     │                                                       │
+│     ├── nss_getspnam_r("alice")                             │
 │     │     ├── Shadow::passwd → "$6$abc$"                    │
 │     │     ├── Shadow::last_change → 19000                   │
-│     │     └── Shadow::expire_date → -1                     │
-│     │                                                     │
-│     └── Verify password hash                              │
+│     │     └── Shadow::expire_date → -1                      │
+│     │                                                       │
+│     └── Verify password hash                                │
 │                                                             │
 │  2. Initialize groups                                       │
-│     ├── nss_initgroups_dyn("alice", 2000)                  │
-│     │     ├── Returns: [2000, 10, 27, 30, 44]             │
-│     │     │   (primary: 2000, supplementary: wheel,        │
-│     │     │    adm, sudo, docker)                          │
-│     │     └── ngroups = 5                                  │
-│     │                                                     │
-│     └── setgroups(5, groups)                              │
+│     ├── nss_initgroups_dyn("alice", 2000)                   │
+│     │     ├── Returns: [2000, 10, 27, 30, 44]               │
+│     │     │   (primary: 2000, supplementary: wheel,         │
+│     │     │    adm, sudo, docker)                           │
+│     │     └── ngroups = 5                                   │
+│     │                                                       │
+│     └── setgroups(5, groups)                                │
 │                                                             │
 │  3. Set up session                                          │
-│     ├── setuid(2000)                                       │
-│     ├── setgid(2000)                                       │
-│     ├── chdir("/home/alice")                               │
-│     └── exec("/bin/zsh")                                   │
+│     ├── setuid(2000)                                        │
+│     ├── setgid(2000)                                        │
+│     ├── chdir("/home/alice")                                │
+│     └── exec("/bin/zsh")                                    │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -66,10 +66,10 @@ nss_getpwnam_r("alice")
   │   })
   │
   └── C buffer allocation:
-      ┌───────┬──────────┬──────┬──────────┬──────┐
-      │name   │ passwd   │ gecos│ dir      │ shell│
-      │"alice"│ "x"      │ "Al.."│ "/home/ │ "/bin/│
-      └───────┴──────────┴──────┴──────────┴──────┘
+      ┌───────┬──────────┬───────┬──────────┬───────┐
+      │name   │ passwd   │ gecos │ dir      │ shell │
+      │"alice"│ "x"      │ "Al.."│ "/home/  │ "/bin/│
+      └───────┴──────────┴───────┴──────────┴───────┘
 ```
 
 ### Step 2: Password Hash Lookup (shadow)

@@ -32,15 +32,15 @@ extern "C" {
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│  Application (getent, login, etc.)                        │
-│      │                                                     │
+│  Application (getent, login, etc.)                       │
+│      │                                                   │
 │      ▼  Calls nss_<name>_endpwent()                      │
-│  glibc NSS dispatcher                                     │
-│      │                                                     │
-│      ▼  iter.close()                                      │
+│  glibc NSS dispatcher                                    │
+│      │                                                   │
+│      ▼  iter.close()                                     │
 │  lazy_static Mutex<Iterator<Passwd>>                     │
-│      │                                                     │
-│      ▼  items = None, index = 0                         │
+│      │                                                   │
+│      ▼  items = None, index = 0                          │
 │  Iterator state cleared — memory freed, ready for next   │
 │  setpwent() to reopen a fresh iterator                   │
 └──────────────────────────────────────────────────────────┘
@@ -76,12 +76,12 @@ extern "C" {
 Thread A                  Thread B
 ──────                  ──────
 getpwent_r() ────→      │
-(same iterator)          │
+(same iterator)         │
                         │
                         setpwent()  — Thread A gets new entries
                         │
 getpwent_r() ────→      │
-(entries from Thread A)  │
+(entries from Thread A) │
 ```
 
 Because the iterator is protected by a `Mutex`, concurrent NSS calls on different threads

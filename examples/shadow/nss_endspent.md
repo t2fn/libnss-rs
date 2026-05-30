@@ -33,17 +33,17 @@ extern "C" {
 ```
 ┌──────────────────────────────────────────────────────────┐
 │  endspent() — Close shadow iterator                      │
-│                                                            │
-│  Application (getent shadow)                              │
-│      │                                                     │
+│                                                          │
+│  Application (getent shadow)                             │
+│      │                                                   │
 │      ▼  Calls nss_<name>_endspent()                      │
-│  glibc NSS dispatcher                                     │
-│      │                                                     │
-│      ▼  iter.close()                                      │
+│  glibc NSS dispatcher                                    │
+│      │                                                   │
+│      ▼  iter.close()                                     │
 │  lazy_static Mutex<Iterator<Shadow>>                     │
-│      │                                                     │
-│      ▼  items = None, index = 0                         │
-│  Memory freed, iterator ready for next spent() call       │
+│      │                                                   │
+│      ▼  items = None, index = 0                          │
+│  Memory freed, iterator ready for next spent() call      │
 └──────────────────────────────────────────────────────────┘
 ```
 

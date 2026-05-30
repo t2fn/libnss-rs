@@ -53,28 +53,28 @@ extern "C" {
 
 ```
 ┌───────────────────────────────────────────────────────────────┐
-│  getpwnam_r("test") call sequence                              │
-│                                                                │
-│  1. Application:                                                │
+│  getpwnam_r("test") call sequence                             │
+│                                                               │
+│  1. Application:                                              │
 │     struct passwd pw;                                         │
 │     char buf[2048];                                           │
 │     int err;                                                  │
-│     nss_example_getpwnam_r("test", &pw, buf, 2048, &err);    │
-│                                                                │
+│     nss_example_getpwnam_r("test", &pw, buf, 2048, &err);     │
+│                                                               │
 │  2. libnss-rs internal flow:                                  │
-│     ┌───────────────────────────────────────────────┐        │
-│     │ Step 1: CStr::from_ptr(name_)                 │        │
-│     │ Step 2: from_utf8(cstr.to_bytes())  → "test" │        │
-│     │ Step 3: PasswdHooks::get_entry_by_name("test")│        │
-│     │         └── Your data source iterates         │        │
-│     │ Step 4: Response::to_c(result, buf, ...)      │        │
-│     └───────────────────────────────────────────────┘        │
-│                                                                │
-│  3. Result when name="test" matches:                         │
-│     pw.name   → "test"         pw.uid   → 1005              │
-│     pw.passwd → "$6$xyz"       pw.gid   → 1005              │
-│     pw.gecos  → "Test User"    pw.dir   → "/home/test"      │
-│     pw.shell  → "/bin/bash"                         │
+│     ┌───────────────────────────────────────────────┐         │
+│     │ Step 1: CStr::from_ptr(name_)                 │         │
+│     │ Step 2: from_utf8(cstr.to_bytes())  → "test"  │         │
+│     │ Step 3: PasswdHooks::get_entry_by_name("test")│         │
+│     │         └── Your data source iterates         │         │
+│     │ Step 4: Response::to_c(result, buf, ...)      │         │
+│     └───────────────────────────────────────────────┘         │
+│                                                               │
+│  3. Result when name="test" matches:                          │
+│     pw.name   → "test"         pw.uid   → 1005                │
+│     pw.passwd → "$6$xyz"       pw.gid   → 1005                │
+│     pw.gecos  → "Test User"    pw.dir   → "/home/test"        │
+│     pw.shell  → "/bin/bash"                                   │
 └───────────────────────────────────────────────────────────────┘
 ```
 

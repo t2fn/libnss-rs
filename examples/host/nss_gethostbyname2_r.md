@@ -54,34 +54,34 @@ extern "C" {
 
 ```
 ┌────────────────────────────────────────────────────┐
-│  gethostbyname2_r("test.example", AF_INET)          │
-│                                                      │
-│  1. Application:                                     │
-│     struct hostent he;                               │
-│     int family = AF_INET;                            │
-│     char buf[4096];                                  │
-│     int err, h_err;                                  │
-│     nss_example_gethostbyname2_r(                    │
-│         "test.example", family, &he, buf, 4096,     │
-│         &err, &h_err);                               │
-│                                                      │
-│  2. libnss-rs flow:                                  │
+│  gethostbyname2_r("test.example", AF_INET)         │
+│                                                    │
+│  1. Application:                                   │
+│     struct hostent he;                             │
+│     int family = AF_INET;                          │
+│     char buf[4096];                                │
+│     int err, h_err;                                │
+│     nss_example_gethostbyname2_r(                  │
+│         "test.example", family, &he, buf, 4096,    │
+│         &err, &h_err);                             │
+│                                                    │
+│  2. libnss-rs flow:                                │
 │     ┌──────────────────────────────────────────┐   │
 │     │ Step 1: CStr::from_ptr(name_)            │   │
-│     │ Step 2: HostHooks::get_host_by_name(    │   │
-│     │           name, AddressFamily)             │   │
-│     │ Step 3: Family mapping:                    │   │
-│     │   AF_INET  → AddressFamily::IPv4           │   │
-│     │   AF_INET6 → AddressFamily::IPv6           │   │
-│     │   AF_UNSPEC → try IPv4, then IPv6         │   │
-│     │ Step 4: Response::to_c(result, buf, ...)  │   │
+│     │ Step 2: HostHooks::get_host_by_name(     │   │
+│     │           name, AddressFamily)           │   │
+│     │ Step 3: Family mapping:                  │   │
+│     │   AF_INET  → AddressFamily::IPv4         │   │
+│     │   AF_INET6 → AddressFamily::IPv6         │   │
+│     │   AF_UNSPEC → try IPv4, then IPv6        │   │
+│     │ Step 4: Response::to_c(result, buf, ...) │   │
 │     └──────────────────────────────────────────┘   │
-│                                                      │
-│  3. Result (IPv4):                                   │
-│     he.h_name       → "test.example"                │
-│     he.h_addrtype   → AF_INET                       │
-│     he.h_length     → 4                             │
-│     he.h_addr_list  → [177.42.42.42]                │
+│                                                    │
+│  3. Result (IPv4):                                 │
+│     he.h_name       → "test.example"               │
+│     he.h_addrtype   → AF_INET                      │
+│     he.h_length     → 4                            │
+│     he.h_addr_list  → [177.42.42.42]               │
 └────────────────────────────────────────────────────┘
 ```
 

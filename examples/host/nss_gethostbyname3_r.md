@@ -59,33 +59,33 @@ extern "C" {
 
 ```
 ┌────────────────────────────────────────────────────┐
-│  gethostbyname3_r("test.example", AF_UNSPEC)        │
-│                                                      │
-│  1. Application:                                     │
-│     struct hostent he;                               │
-│     int ttl;                                         │
-│     const char *canon;                               │
-│     char buf[4096];                                  │
-│     int err, h_err;                                  │
-│     nss_example_gethostbyname3_r(                    │
-│         "test.example", AF_UNSPEC, &he, buf, 4096,  │
+│  gethostbyname3_r("test.example", AF_UNSPEC)       │
+│                                                    │
+│  1. Application:                                   │
+│     struct hostent he;                             │
+│     int ttl;                                       │
+│     const char *canon;                             │
+│     char buf[4096];                                │
+│     int err, h_err;                                │
+│     nss_example_gethostbyname3_r(                  │
+│         "test.example", AF_UNSPEC, &he, buf, 4096, │
 │         &err, &h_err, &ttl, &canon);               │
-│                                                      │
-│  2. libnss-rs flow:                                  │
-│     gethostbyname3_r() delegates to:                 │
-│     gethostbyname2_r("test.example", AF_UNSPEC)      │
-│         │                                            │
-│         ├── Resolves hostname                        │
+│                                                    │
+│  2. libnss-rs flow:                                │
+│     gethostbyname3_r() delegates to:               │
+│     gethostbyname2_r("test.example", AF_UNSPEC)    │
+│         │                                          │
+│         ├── Resolves hostname                      │
 │         ├── Sets *ttlp = 0 (TTL value)             │
 │         └── Sets *canonp = name (canonical name)   │
-│                                                      │
-│  3. Result:                                          │
-│     he.h_name       → "test.example"                │
-│     he.h_addrtype   → AF_INET                       │
-│     he.h_length     → 4                             │
-│     he.h_addr_list  → [177.42.42.42]                │
-│     *ttlp           → 0                             │
-│     *canonp         → "test.example"                │
+│                                                    │
+│  3. Result:                                        │
+│     he.h_name       → "test.example"               │
+│     he.h_addrtype   → AF_INET                      │
+│     he.h_length     → 4                            │
+│     he.h_addr_list  → [177.42.42.42]               │
+│     *ttlp           → 0                            │
+│     *canonp         → "test.example"               │
 └────────────────────────────────────────────────────┘
 ```
 

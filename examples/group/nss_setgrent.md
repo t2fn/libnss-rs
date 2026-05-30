@@ -36,18 +36,18 @@ extern "C" {
 ```
 ┌──────────────────────────────────────────────────────────┐
 │  setgrent() — Reset group iterator                       │
-│                                                            │
-│  Application (getent group)                               │
-│      │                                                     │
+│                                                          │
+│  Application (getent group)                              │
+│      │                                                   │
 │      ▼  Calls nss_<name>_setgrent()                      │
-│  glibc NSS dispatcher                                     │
-│      │                                                     │
+│  glibc NSS dispatcher                                    │
+│      │                                                   │
 │      ▼  GroupHooks::get_all_entries()                    │
-│  Your Rust implementation                                  │
-│      │                                                     │
+│  Your Rust implementation                                │
+│      │                                                   │
 │      ▼  iter.open(Vec<Group>)                            │
 │  lazy_static Mutex<Iterator<Group>>                      │
-│      │                                                     │
+│      │                                                   │
 │      ▼  Iterator ready for getgrent_r() calls            │
 └──────────────────────────────────────────────────────────┘
 ```

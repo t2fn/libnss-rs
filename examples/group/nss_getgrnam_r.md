@@ -56,19 +56,19 @@ extern "C" {
 │  getgrnam_r("test") call sequence                  │
 │                                                    │
 │  1. Application:                                   │
-│     struct group gr;                              │
-│     nss_example_getgrnam_r("test", &gr, buf,     │
+│     struct group gr;                               │
+│     nss_example_getgrnam_r("test", &gr, buf,       │
 │                            sizeof(buf), &err);     │
 │                                                    │
-│  2. libnss-rs flow:                               │
-│     CStr::from_ptr(name_)                         │
-│         → from_utf8()  →  "test"                 │
-│         → GroupHooks::get_entry_by_name("test")  │
-│         → Response::to_c(result, buf, buflen)    │
+│  2. libnss-rs flow:                                │
+│     CStr::from_ptr(name_)                          │
+│         → from_utf8()  →  "test"                   │
+│         → GroupHooks::get_entry_by_name("test")    │
+│         → Response::to_c(result, buf, buflen)      │
 │                                                    │
 │  3. Result:                                        │
 │     gr.name     → "test"       gr.gid      → 1005  │
-│     gr.members  → ["someone"]                    │
+│     gr.members  → ["someone"]                      │
 └────────────────────────────────────────────────────┘
 ```
 

@@ -56,32 +56,32 @@ extern "C" {
 ```
 ┌────────────────────────────────────────────────────┐
 │  initgroups_dyn("test", 1000, &start, &size,       │
-│                  &groupsp, 64, &errnop)             │
-│                                                      │
-│  1. Application:                                     │
-│     gid_t *groups = NULL;                           │
+│                  &groupsp, 64, &errnop)            │
+│                                                    │
+│  1. Application:                                   │
+│     gid_t *groups = NULL;                          │
 │     size_t start = 0, size = 0;                    │
-│     int err;                                         │
-│     nss_example_initgroups_dyn("test", 1000,        │
-│         &start, &size, &groups, 64, &err);          │
-│                                                      │
-│  2. libnss-rs flow:                                  │
+│     int err;                                       │
+│     nss_example_initgroups_dyn("test", 1000,       │
+│         &start, &size, &groups, 64, &err);         │
+│                                                    │
+│  2. libnss-rs flow:                                │
 │     ┌──────────────────────────────────────────┐   │
 │     │ Step 1: CStr::from_ptr(name_)            │   │
 │     │ Step 2: InitgroupsHooks::                │   │
-│     │          get_entries_by_user("test")      │   │
-│     │ Step 3: Filter: gid != skipgroup          │   │
+│     │          get_entries_by_user("test")     │   │
+│     │ Step 3: Filter: gid != skipgroup         │   │
 │     │ Step 4: Collect GIDs into Vec<gid_t>     │   │
-│     │ Step 5: realloc(groupsp, new_size)        │   │
+│     │ Step 5: realloc(groupsp, new_size)       │   │
 │     │ Step 6: Copy GIDs into groupsp[start:]   │   │
-│     │ Step 7: start = group_array.len()         │   │
+│     │ Step 7: start = group_array.len()        │   │
 │     └──────────────────────────────────────────┘   │
-│                                                      │
-│  3. Result:                                          │
+│                                                    │
+│  3. Result:                                        │
 │     groups = [3005, 3006, 3007]  (excluding 1000)  │
-│     start = 3                                       │
-│     size = 3                                        │
-│     err = 0                                          │
+│     start = 3                                      │
+│     size = 3                                       │
+│     err = 0                                        │
 └────────────────────────────────────────────────────┘
 ```
 
@@ -197,21 +197,21 @@ SSH connection lifecycle:
 
   ssh client                          sshd
   ──────────                        ────
-     │                               │
+     │                                │
      ├── SSH connection established   │
      │   → authentication             │
-     │                               │
+     │                                │
      │                   nss_getpwnam_r(user)
      │                   nss_getspnam_r(user)
      │                   ★ nss_initgroups_dyn(user, gid)
-     │                               │
+     │                                │
      │                   setgroups(ngroups, groups)
      │                   chdir(dir)
      │                   exec(shell)
-     │                               │
-     │   ← shell session             │
-     │   (full group membership)     │
-     │                               │
+     │                                │
+     │   ← shell session              │
+     │   (full group membership)      │
+     │                                │
      └── disconnect ──────────────────┘
 ```
 

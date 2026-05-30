@@ -37,18 +37,18 @@ extern "C" {
 ```
 ┌──────────────────────────────────────────────────────────┐
 │  setspent() — Reset shadow iterator                      │
-│                                                            │
+│                                                          │
 │  Application (e.g., getent shadow)                       │
-│      │                                                     │
+│      │                                                   │
 │      ▼  Calls nss_<name>_setspent()                      │
-│  glibc NSS dispatcher                                     │
-│      │                                                     │
+│  glibc NSS dispatcher                                    │
+│      │                                                   │
 │      ▼  ShadowHooks::get_all_entries()                   │
-│  Your Rust implementation                                  │
-│      │                                                     │
+│  Your Rust implementation                                │
+│      │                                                   │
 │      ▼  iter.open(Vec<Shadow>)                           │
 │  lazy_static Mutex<Iterator<Shadow>>                     │
-│      │                                                     │
+│      │                                                   │
 │      ▼  Iterator ready for getspent_r() calls            │
 └──────────────────────────────────────────────────────────┘
 ```

@@ -81,13 +81,13 @@ Application:                  NSS Module:
 Thread A                    Thread B
 ────────                    ────────
 
-setpwent() ──→ open        │
-getpwent_r() ──→ entry 1   │
-                      ─────┤ setpwent() → reopen
-getpwent_r() ──→ entry 2   │
-                      ─────┤ getpwent_r() → entry 1
-endpwent() ──→ close        │
-                      ─────┤ getpwent_r() → entry 2
+setpwent() ──→ open           │
+getpwent_r() ──→ entry 1      │
+                         ─────┤ setpwent() → reopen
+getpwent_r() ──→ entry 2      │
+                         ─────┤ getpwent_r() → entry 1
+endpwent() ──→ close          │
+                         ─────┤ getpwent_r() → entry 2
                               │
                               └── endpwent() → close
 ```
